@@ -39,8 +39,14 @@ class App extends React.Component {
     // TODO(#5) Create a todo object, which has 3 properties:
     // id (number), text (string), and isComplete (boolean).
     // hint: Use this.nextId and change it in some way.
+    const todo = {
+      id: this.nextId++,
+      text: todoInputValue,
+      isComplete: false
+    };
 
     // TODO(#6) Add the todo to the nextState.todos array.
+    nextState.todos.push(todo);
 
     // Set the next state.
     this.setState(nextState);
@@ -48,40 +54,50 @@ class App extends React.Component {
 
   onTodoListItemToggle(id) {
     // TODO(#13) Deep copy the state.
+    const nextState = cloneDeep(this.state);
 
     // TODO(#14) Find the todo that matches the id.
     // If there is no matched todo, do nothing.
     // hint: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find
+    const todo = nextState.todos.find(todo => todo.id === id);
+    if (!todo) {
+      return;
+    }
 
     // TODO(#15) Update the matched todo's isComplete property
     // to be the opposite of what it is currently set.
+    todo.isComplete = !todo.isComplete;
 
     // TODO(#16) Set the next state.
+    this.setState(nextState);
   }
 
   onTodoListItemRemove(id) {
     // TODO(#21) Deep copy the state.
+    const nextState = cloneDeep(this.state);
 
     // TODO(#22) Use Array.prototype.filter to create a new
     // this.state.todos array that does *not* have a todo
     // that matches given id.
     // hint: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
+    nextState.todos = nextState.todos.filter(todo => todo.id !== id);
 
     // TODO(#23) Set the next state.
+    this.setState(nextState);
   }
 
   render() {
     return (
       <div className="container">
         <h1>{this.state.reactDevName}'s Todos</h1>
-        <TodoInput onEnter={/* TODO(#7) Use this.onTodoInputEnter */} />
+        <TodoInput onEnter={this.onTodoInputEnter/* TODO(#7) Use this.onTodoInputEnter */} />
 
         <br />
 
         <TodoList
           todos={this.state.todos}
-          onTodoListItemToggle={/* TODO(#17) Use this.onTodoListItemToggle */}
-          onTodoListItemRemove={/* TODO(#24) Use the correct event handler. */}
+          onTodoListItemToggle={this.onTodoListItemToggle/* TODO(#17) Use this.onTodoListItemToggle */}
+          onTodoListItemRemove={this.onTodoListItemRemove/* TODO(#24) Use the correct event handler. */}
         />
 
         <br />
